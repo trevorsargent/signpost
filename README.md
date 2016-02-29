@@ -23,7 +23,7 @@
 - Back Button goes back to Main Map
 
 
-## [Screen 4: Login](/screenshots/Screen.Login.JPG) 
+## [Screen 4: Login](/screenshots/Screen.Login.jpg) 
 
 - This will most likely be a fragment overlaid on top of the Main Map Activity. 
 - users provide a username and password
