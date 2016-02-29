@@ -1,8 +1,7 @@
-Signpost is an app where users can “plant posts” or “hang signs” on existing posts, or use a map to see posts that other people have planted and added to. 
+[Signpost](/screenshots/Metaphor.JPG) is an app where users can “plant posts” or “hang signs” on existing posts, or use a map to see posts that other people have planted and added to. 
 
 
-## Screen 1: Main Map
-
+## [Screen 1: Main Map](/screenshots/Screen.Main.JPG)
 - Google Map View displaying locations of Posts
 - Edit Text with Auto Place Complete moves the map to any location to view the signposts
 - FAB (only visible when users are logged in) which brings users to the Create Sign Activity
@@ -10,7 +9,7 @@ Signpost is an app where users can “plant posts” or “hang signs” on exis
 - Back button quits
 
 
-## Screen 2: Popular Signs
+## [Screen 2: Popular Signs](/screenshots/Screen.Popular.JPG)
 
 - The primary part of this activity will be populated by a RecyclerView which contains CardViews of the 100 most popular nearby signs. These signs will have a ImageView with a drawable representing their category and a TextView with the message of the sign.
 - The action bar will say the word “Popular” and the same overflow menu as in the Main Map Activity.
@@ -18,13 +17,13 @@ Signpost is an app where users can “plant posts” or “hang signs” on exis
 - Back button goes back to Main Map
 
 
-## Screen 3: Nearby Signs
+## [Screen 3: Nearby Signs](/screenshots/Screen.Nearby.JPG)
 
 - Same as Popular Signs but sorts signs by closest to user’s location.
 - Back Button goes back to Main Map
 
 
-## Screen 4: Login 
+## [Screen 4: Login](/screenshots/Screen.Login.JPG) 
 
 - This will most likely be a fragment overlaid on top of the Main Map Activity. 
 - users provide a username and password
@@ -32,7 +31,7 @@ Signpost is an app where users can “plant posts” or “hang signs” on exis
 - pressing either sign up or the back button take the user back to whichever view/fragment they were in previously
 
 
-## Screen 5: Post
+## [Screen 5: Post](/screenshots/Screen.Post.JPG)
 
 - This activity will show a specific post. It will consist of a RecyclerView whose first Card is the name of the post while the subsequent ones are signs as shown in Popular and Nearby except that there will be a post connecting them together.
 - Pressing the back button will bring the user back to the previous activity.
@@ -42,7 +41,7 @@ Signpost is an app where users can “plant posts” or “hang signs” on exis
 - We would like to do the fancy thing where the name of the post transitions into the toolbar as the user scrolls down.
 
 
-## Screen 6: Sign
+## [Screen 6: Sign](/screenshots/Screen.Sign.JPG)
 
 - Action Bar with the post name.
 - This activity will have a zoomed in ImageView of the map where the post you are checking is from.
@@ -54,7 +53,7 @@ Signpost is an app where users can “plant posts” or “hang signs” on exis
 - The back button takes you to all the signs for a particular post.
 
 
-## Screen 7: Create Sign
+## [Screen 7: Create Sign](/screenshots/Screen.Create.JPG)
 
 - Action Bar called Hang Sign with a TabView.
 - MapView with your location and all the posts near you. You have to be around that location to to hang a sign.
