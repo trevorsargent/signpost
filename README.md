@@ -104,9 +104,9 @@ Custom back end to supply data
 
 ## Featrues
 
-- Standard REST implementation you know the drill
+- Standard (I think) REST implementation you know the drill
 - Sinatra app
-- hosted on [Heroku](http://www.heroku.com) until we’re famous
+- hosted on [Digital Ocean](http://www.digitalocean.com) until we’re famous
 - visit us at [signpost.ml](http://www.signpost.ml)
 
 # Features to add:
