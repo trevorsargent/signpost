@@ -1,9 +1,9 @@
-[Signpost](/screenshots/Metaphor.JPG) is an app where users can “plant posts” or “hang signs” on existing posts, or use a map to see posts that other people have planted and added to. 
+[Signpost](/screenshots/Metaphor.jpg) is an app where users can “plant posts” or “hang signs” on existing posts, or use a map to see posts that other people have planted and added to. 
 
 
 ## Screen 1: Main Map
 
-![image](/screenshots/Screen.Main.JPG)
+![image](/screenshots/Screen.Main.jpg)
 - Google Map View displaying locations of Posts
 - Edit Text with Auto Place Complete moves the map to any location to view the signposts
 - FAB (only visible when users are logged in) which brings users to the Create Sign Activity
@@ -13,7 +13,7 @@
 
 ## Screen 2: Popular Signs
 
-![image](/screenshots/Screen.Popular.JPG)
+![image](/screenshots/Screen.Popular.jpg)
 
 - The primary part of this activity will be populated by a RecyclerView which contains CardViews of the 100 most popular nearby signs. These signs will have a ImageView with a drawable representing their category and a TextView with the message of the sign.
 - The action bar will say the word “Popular” and the same overflow menu as in the Main Map Activity.
@@ -23,7 +23,7 @@
 
 ## Screen 3: Nearby Signs
 
-![image](/screenshots/Screen.Nearby.JPG)
+![image](/screenshots/Screen.Nearby.jpg)
 
 - Same as Popular Signs but sorts signs by closest to user’s location.
 - Back Button goes back to Main Map
@@ -31,7 +31,7 @@
 
 ## Screen 4: Login
 
-![image](/screenshots/Screen.Login.JPG) 
+![image](/screenshots/Screen.Login.jpg) 
 
 - This will most likely be a fragment overlaid on top of the Main Map Activity. 
 - users provide a username and password
@@ -41,7 +41,7 @@
 
 ## Screen 5: Post
 
-![image](/screenshots/Screen.Post.JPG)
+![image](/screenshots/Screen.Post.jpg)
 
 - This activity will show a specific post. It will consist of a RecyclerView whose first Card is the name of the post while the subsequent ones are signs as shown in Popular and Nearby except that there will be a post connecting them together.
 - Pressing the back button will bring the user back to the previous activity.
@@ -53,7 +53,7 @@
 
 ## Screen 6: Sign
 
-![image](/screenshots/Screen.Sign.JPG)
+![image](/screenshots/Screen.Sign.jpg)
 
 - Action Bar with the post name.
 - This activity will have a zoomed in ImageView of the map where the post you are checking is from.
@@ -67,7 +67,7 @@
 
 ## Screen 7: Create Sign
 
-![image](/screenshots/Screen.Create.JPG)
+![image](/screenshots/Screen.Create.jpg)
 
 - Action Bar called Hang Sign with a TabView.
 - MapView with your location and all the posts near you. You have to be around that location to to hang a sign.
