@@ -1,5 +1,6 @@
 [Signpost](/screenshots/Metaphor.jpg) is an app where users can “plant posts” or “hang signs” on existing posts, or use a map to see posts that other people have planted and added to. 
 
+# Activities
 
 ## Screen 1: Main Map
 
@@ -77,33 +78,38 @@
 - Another TextView to add the message.
 - Save button at the end. It takes you back to the previous page you came from.
 
-##Back End - signpost.ml
+#Back End - signpost.ml
 
-- Custom back end to supply data
-- Proposed Schema
-    - Post
-        - has_many :signs
-        - string :name
-        - number :latitude
-        - number :longitude
-        - boolean :visible
-    - Sign
-        - string :message
-        - DateTime :date created
-        - int :type 
-        - belongs_to :user
-        - belongs_to :post
-    - User
-        - has_many :signs
-        - username
-        - email
-        - password
+Custom back end to supply data
+
+## Proposed Schema
+
+- Post
+    - has_many :signs
+    - string :name
+    - number :latitude
+    - number :longitude
+    - boolean :visible
+- Sign
+    - string :message
+    - DateTime :date created
+    - int :type 
+    - belongs_to :user
+    - belongs_to :post
+- User
+    - has_many :signs
+    - username
+    - email
+    - password
+
+## Featrues
+
 - Standard REST implementation you know the drill
 - Sinatra app
 - hosted on [Heroku](http://www.heroku.com) until we’re famous
 - visit us at [signpost.ml](http://www.signpost.ml)
 
-## Features to add:
+# Features to add:
 
 - See friends only signs
 - ‘so ‘n’ so saw your sign’
