@@ -1,9 +1,11 @@
 package ml.signpost.signpost.Activities;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,9 +15,10 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ml.signpost.signpost.Fragments.MainMapFragment;
 import ml.signpost.signpost.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainMapFragment.OnFragmentInteractionListener {
 
     @Bind(R.id.activity_main_bottom_navigation)
     AHBottomNavigation mBottomNav;
@@ -40,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.activity_main_frame_layout, new MainMapFragment());
+        transaction.commit();
 
     }
 
@@ -63,5 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
 //https://github.com/aurelhubert/ahbottomnavigation

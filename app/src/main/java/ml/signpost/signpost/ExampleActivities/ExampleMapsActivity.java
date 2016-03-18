@@ -1,7 +1,7 @@
 package ml.signpost.signpost.ExampleActivities;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +39,8 @@ public class ExampleMapsActivity extends FragmentActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+//        Log.d("tag", String.valueOf(mMap.isMyLocationEnabled()));
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
