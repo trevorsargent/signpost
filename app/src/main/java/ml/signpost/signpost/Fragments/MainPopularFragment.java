@@ -1,109 +1,105 @@
 package ml.signpost.signpost.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.R;
+import ml.signpost.signpost.Signpost;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MainPopularFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MainPopularFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MainPopularFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class MainPopularFragment extends Fragment implements PostRecyclerViewAdapter.OnRowClickListener {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    @Bind(R.id.fragment_main_popular_recycler_view)
+    RecyclerView mRecyclerView;
+    private PostRecyclerViewAdapter mAdapter;
+    private static MainPopularFragment sInstance;
 
-    public MainPopularFragment() {
-        // Required empty public constructor
-    }
+    public static MainPopularFragment newInstance() {
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainPopularFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MainPopularFragment newInstance(String param1, String param2) {
-        MainPopularFragment fragment = new MainPopularFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+        if (sInstance == null) {
+            MainPopularFragment fragment = new MainPopularFragment();
+            Bundle args = new Bundle();
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_popular, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            fragment.setArguments(args);
+            sInstance = fragment;
+            return sInstance;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            return sInstance;
         }
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.signpost.ml/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Signpost backend = retrofit.create(Signpost.class);
+
+
+        super.onCreateView(inflater, container, savedInstanceState);
+
+        View rootview = inflater.inflate(R.layout.fragment_main_popular, container, false);
+
+        ButterKnife.bind(this, rootview);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        final ArrayList<Post> list = new ArrayList<>();
+        mAdapter = new PostRecyclerViewAdapter(list);
+        mRecyclerView.setAdapter(mAdapter);
+
+        backend.allPosts().enqueue(new Callback<List<Post>>() {
+
+
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                list.addAll(response.body());
+                mAdapter.addItems(list);
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d("TAG", t.getMessage());
+                Toast.makeText(getContext(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        return rootview;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onResume() {
+        super.onResume();
+
+
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onRowClick(Post post) {
+        Toast.makeText(getContext(), "congrats you clicked a row", Toast.LENGTH_SHORT).show();
     }
 }
