@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,12 +14,16 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ml.signpost.signpost.Fragments.MainMapFragment;
+import ml.signpost.signpost.Fragments.MainPopularFragment;
 import ml.signpost.signpost.R;
 
 public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.activity_main_bottom_navigation)
     AHBottomNavigation mBottomNav;
+
+    FragmentManager fm = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +65,24 @@ public class MainActivity extends AppCompatActivity {
         mBottomNav.setInactiveColor(R.color.colorInactive);
 
         mBottomNav.setColored(true);
+        mBottomNav.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position, boolean wasSelected) {
+                if(position == 0){
+                    fm.beginTransaction()
+                            .replace(R.id.activity_main_frame_layout, MainMapFragment.newInstance())
+                            .commit();
+                }else if(position == 1){
+                    fm.beginTransaction()
+                            .replace(R.id.activity_main_frame_layout, MainPopularFragment.newInstance())
+                            .commit();
+                }
+            }
+        });
 
     }
+
+
 
 }
 //https://github.com/aurelhubert/ahbottomnavigation
