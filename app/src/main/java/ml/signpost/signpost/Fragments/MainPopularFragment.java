@@ -17,8 +17,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ml.signpost.signpost.Models.Post;
+import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.R;
-import ml.signpost.signpost.Signpost;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,7 +68,7 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         final ArrayList<Post> list = new ArrayList<>();
-        mAdapter = new PostRecyclerViewAdapter(list);
+        mAdapter = new PostRecyclerViewAdapter(list, this);
         mRecyclerView.setAdapter(mAdapter);
 
         backend.allPosts().enqueue(new Callback<List<Post>>() {

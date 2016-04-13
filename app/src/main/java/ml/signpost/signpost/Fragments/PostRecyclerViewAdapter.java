@@ -27,8 +27,9 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
     }
 
 
-    public PostRecyclerViewAdapter(List<Post> listCall) {
+    public PostRecyclerViewAdapter(List<Post> listCall, OnRowClickListener listener) {
         mPosts = new ArrayList<>(listCall);
+        mListener = listener;
     }
 
     @Override
