@@ -197,17 +197,7 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 Log.d("MainMapFragment", "onResponse called");
                 mPosts.addAll(response.body());
-
-                if (mPosts != null && !mPosts.isEmpty()) {
-                    for (Post e : mPosts) {
-//                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
-
-                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLng())).title(e.getTitle()));
-                    }
-                } else {
-                    Toast.makeText(getContext(), R.string.fragment_map_no_posts, Toast.LENGTH_LONG).show();
-                }
-
+                populateMap();
             }
 
             @Override
@@ -226,5 +216,17 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private void populateMap(){
+        if (mPosts != null && !mPosts.isEmpty()) {
+            for (Post e : mPosts) {
+//                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
+
+                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLng())).title(e.getTitle()));
+            }
+        } else {
+            Toast.makeText(getContext(), R.string.fragment_map_no_posts, Toast.LENGTH_LONG).show();
+        }
     }
 }
