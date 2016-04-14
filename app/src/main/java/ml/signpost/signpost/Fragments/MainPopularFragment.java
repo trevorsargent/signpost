@@ -1,5 +1,6 @@
 package ml.signpost.signpost.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ml.signpost.signpost.Activities.PostActivity;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.R;
@@ -32,6 +34,8 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
     RecyclerView mRecyclerView;
     private PostRecyclerViewAdapter mAdapter;
     private static MainPopularFragment sInstance;
+    public static final String ARG_POST = "POST.CODEPOST";
+    public static final int CODE_POST = 5;
 
     public static MainPopularFragment newInstance() {
 
@@ -100,6 +104,13 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
 
     @Override
     public void onRowClick(Post post) {
+
+        Intent intent = new Intent(getActivity(), PostActivity.class);
+        intent.putExtra(ARG_POST, post);
+        startActivityForResult(intent, CODE_POST);
+
+//        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+
         Toast.makeText(getContext(), "congrats you clicked a row", Toast.LENGTH_SHORT).show();
     }
 }
