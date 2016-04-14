@@ -35,11 +35,11 @@ public interface Signpost {
             @Path("title") String title
     );
 
-    @GET("post/{lat}/{lng}")
-    Call<List<Post>> locationPosts (
+    @GET("post/{lat}/{lng}/{rad}")
+    Call<List<Post>> locationPosts(
             @Path("lat") double lat,
-            @Path("lng") double lng
-    );
+            @Path("lng") double lng,
+            @Path("rad") int i);
 
     @GET("posts")
     Call<List<Post>> allPosts();

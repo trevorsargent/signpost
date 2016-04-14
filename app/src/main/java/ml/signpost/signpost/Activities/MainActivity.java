@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     AHBottomNavigation mBottomNav;
 
     FragmentManager fm = getSupportFragmentManager();
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +46,10 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
-
     }
 
 
-    void prepBottomBar(){
+    void prepBottomBar() {
         AHBottomNavigationItem map = new AHBottomNavigationItem("Map", R.drawable.ic_maps_place, Color.parseColor("#455C65"));
         AHBottomNavigationItem popular = new AHBottomNavigationItem("Popular", R.drawable.ic_maps_local_bar, Color.parseColor("#455C65"));
         AHBottomNavigationItem nearby = new AHBottomNavigationItem("Nearby", R.drawable.ic_maps_local_restaurant, Color.parseColor("#455C65"));
@@ -68,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
         mBottomNav.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position, boolean wasSelected) {
-                if(position == 0){
+                if (position == 0) {
                     fm.beginTransaction()
                             .replace(R.id.activity_main_frame_layout, MainMapFragment.newInstance())
                             .commit();
-                }else if(position == 1){
+                } else if (position == 1) {
                     fm.beginTransaction()
                             .replace(R.id.activity_main_frame_layout, MainPopularFragment.newInstance())
                             .commit();
@@ -81,8 +80,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 }
 //https://github.com/aurelhubert/ahbottomnavigation

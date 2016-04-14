@@ -1,7 +1,12 @@
 package ml.signpost.signpost.Fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,7 +41,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainMapFragment extends Fragment implements OnMapReadyCallback {
+public class MainMapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static MainMapFragment sInstance;
     @Bind(R.id.layout_map_view_map)
@@ -41,7 +50,8 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap mGoogleMap;
     private ArrayList<Post> mPosts;
     private SignpostSQLiteOpenHelper mHelper;
-
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
 
     @Nullable
@@ -56,38 +66,14 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         mMap.getMapAsync(this);
         mMap.onCreate(savedInstanceState);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.signpost.ml/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-
-        Signpost backend = retrofit.create(Signpost.class);
-        mPosts = new ArrayList<>();
-        backend.allPosts().enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                Log.d("MainMapFragment", "onResponse called");
-                mPosts.addAll(response.body());
-
-                if (mPosts != null && !mPosts.isEmpty()) {
-                    for (Post e : mPosts) {
-                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
-
-                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLng())).title(e.getTitle()));
-                    }
-                } else {
-                    Toast.makeText(getContext(), R.string.fragment_map_no_posts, Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainMapFragment", t.getMessage());
-                Toast.makeText(getContext(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
         return rootview;
     }
@@ -107,8 +93,6 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-
-//                openDialogFragment(latLng);
 
             }
         });
@@ -180,5 +164,67 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.signpost.ml/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        Signpost backend = retrofit.create(Signpost.class);
+
+        mPosts = new ArrayList<>();
+        backend.locationPosts(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 10).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                Log.d("MainMapFragment", "onResponse called");
+                mPosts.addAll(response.body());
+
+                if (mPosts != null && !mPosts.isEmpty()) {
+                    for (Post e : mPosts) {
+//                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
+
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLng())).title(e.getTitle()));
+                    }
+                } else {
+                    Toast.makeText(getContext(), R.string.fragment_map_no_posts, Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.d("MainMapFragment", t.getMessage());
+                Toast.makeText(getContext(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
