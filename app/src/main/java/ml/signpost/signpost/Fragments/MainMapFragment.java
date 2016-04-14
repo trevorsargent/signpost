@@ -182,7 +182,7 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
     public void onConnected(@Nullable Bundle bundle) {
         Log.d("TAG", "onConnected called");
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             requestPermissions(new String[]{Manifest.permission_group.LOCATION},CODE_PERMISSIONS_REQUEST);
             //    ActivityCompat#requestPermissions
