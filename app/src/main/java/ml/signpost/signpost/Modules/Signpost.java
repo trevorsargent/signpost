@@ -44,4 +44,8 @@ public interface Signpost {
     @GET("posts")
     Call<List<Post>> allPosts();
 
+    @GET("post/title/{title}/signs")
+    Call<List<Sign>> signsForPost(
+        @Path("title") String title
+    );
 }
