@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -52,6 +53,7 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
     private SignpostSQLiteOpenHelper mHelper;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    public static final int CODE_PERMISSIONS_REQUEST = 0;
 
 
     @Nullable
@@ -75,6 +77,8 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
                     .build();
         }
 
+        mGoogleApiClient.connect();
+
         return rootview;
     }
 
@@ -96,36 +100,9 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
 
             }
         });
+
+//        populateMap();
     }
-
-//    private void openDialogFragment(LatLng latLng) {
-//        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//        CreatePinDF df = CreatePinDF.newInstance();
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ARG_USER, mUsername);
-//        bundle.putInt(ARG_USERID, mHelper.idFromUserName(mUsername));
-//        bundle.putDouble(ARG_LAT, latLng.latitude);
-//        bundle.putDouble(ARG_LNG, latLng.longitude);
-//        df.setArguments(bundle);
-//        //df.setTargetFragment(this, PinMeAlertDialogFragment.REQUEST_CODE);
-//        //ft.addToBackStack(null);
-//
-//
-//        df.show(ft, "dialogfragment");
-//    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Bundle info=null;
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == PinMeAlertDialogFragment.REQUEST_CODE){
-//            info = data.getBundleExtra(PinMeAlertDialogFragment.ARG_PIN);
-//        }
-//
-//        mPin.setTitle(info.getString("title"));
-//        mPin.setDescription(info.getString("desc"));
-//        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mPin.getLat(), mPin.getLng())).title(mPin.getTitle()));
-//    }
 
     public static MainMapFragment newInstance() {
 
@@ -141,12 +118,6 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
         }
 
     }
-
-
-//    public void addPin(Pin pin) {
-//        mHelper.insertPin(pin);
-//        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(pin.getLat(), pin.getLng())).title(pin.getTitle()).snippet(pin.getDescription()));
-//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -167,11 +138,53 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CODE_PERMISSIONS_REQUEST) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://www.signpost.ml/api/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+
+                Signpost backend = retrofit.create(Signpost.class);
+
+                mPosts = new ArrayList<>();
+                backend.locationPosts(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 10).enqueue(new Callback<List<Post>>() {
+                    @Override
+                    public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                        Log.d("MainMapFragment", "onResponse called");
+                        mPosts.addAll(response.body());
+                        populateMap();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Post>> call, Throwable t) {
+                        Log.d("MainMapFragment", t.getMessage());
+                        Toast.makeText(getContext(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            } else {
+
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+            return;
+        }
+
+    }
+
+    @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.d("TAG", "onConnected called");
 
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
+            requestPermissions(new String[]{Manifest.permission_group.LOCATION},CODE_PERMISSIONS_REQUEST);
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -180,32 +193,11 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.signpost.ml/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
 
-        Signpost backend = retrofit.create(Signpost.class);
+        Log.d("TAG", "CURRENT: Lat: " + mLastLocation.getLatitude() + " Lng: " + mLastLocation.getLongitude());
 
-        mPosts = new ArrayList<>();
-        backend.locationPosts(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 10).enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                Log.d("MainMapFragment", "onResponse called");
-                mPosts.addAll(response.body());
-                populateMap();
-            }
 
-            @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainMapFragment", t.getMessage());
-                Toast.makeText(getContext(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -218,15 +210,30 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback, Goo
 
     }
 
-    private void populateMap(){
+    private void populateMap() {
         if (mPosts != null && !mPosts.isEmpty()) {
             for (Post e : mPosts) {
-//                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
+                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
 
                 mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLng())).title(e.getTitle()));
             }
         } else {
             Toast.makeText(getContext(), R.string.fragment_map_no_posts, Toast.LENGTH_LONG).show();
         }
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
+
+
     }
 }
