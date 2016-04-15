@@ -83,7 +83,7 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Log.d("TAG", t.getMessage());
-                Toast.makeText(getContext(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -100,6 +100,6 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
 
     @Override
     public void onRowClick(Post post) {
-        Toast.makeText(getContext(), "congrats you clicked a row", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "congrats you clicked a row", Toast.LENGTH_SHORT).show();
     }
 }
