@@ -86,7 +86,7 @@ Custom back end to supply data
 
 - Post
     - has_many :signs
-    - string :name
+    - string :title
     - number :latitude
     - number :longitude
     - boolean :visible
@@ -98,9 +98,10 @@ Custom back end to supply data
     - belongs_to :post
 - User
     - has_many :signs
-    - username
-    - email
-    - password
+    - string: name
+    - string: username
+    - string: email
+    - string: password_digest
 
 ## Featrues
 
