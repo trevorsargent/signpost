@@ -17,7 +17,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ml.signpost.signpost.Activities.PostActivity;
+import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.R;
@@ -56,13 +56,6 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.signpost.ml/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        Signpost backend = retrofit.create(Signpost.class);
-
 
         super.onCreateView(inflater, container, savedInstanceState);
 
@@ -75,22 +68,9 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
         mAdapter = new PostRecyclerViewAdapter(list, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        backend.allPosts().enqueue(new Callback<List<Post>>() {
+        ArrayList<Post> posts = ((MainActivity) getActivity()).getPosts();
 
-
-            @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                list.addAll(response.body());
-                mAdapter.addItems(list);
-            }
-
-            @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("TAG", t.getMessage());
-                Toast.makeText(getContext(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        mAdapter.addItems(posts);
 
         return rootview;
     }

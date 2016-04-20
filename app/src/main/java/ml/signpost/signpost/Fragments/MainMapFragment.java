@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.Modules.SignpostSQLiteOpenHelper;
@@ -41,7 +42,6 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
     @Bind(R.id.layout_map_view_map)
     MapView mMap;
     GoogleMap mGoogleMap;
-    private ArrayList<Post> mPosts;
     private SignpostSQLiteOpenHelper mHelper;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -72,6 +72,7 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         Log.d("MainMapFragment", "onMapReady called");
 
+
         mGoogleMap = googleMap;
 
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -81,29 +82,8 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.signpost.ml/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        populateMap();
 
-
-        Signpost backend = retrofit.create(Signpost.class);
-
-        mPosts = new ArrayList<>();
-        backend.allPosts().enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                Log.d("MainMapFragment", "onResponse called");
-                mPosts.addAll(response.body());
-                populateMap();
-            }
-
-            @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.d("MainMapFragment", t.getMessage());
-                Toast.makeText(getContext(), "Error Fetching Posts", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 //    private void openDialogFragment(LatLng latLng) {
@@ -149,8 +129,6 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
-
-
 //    public void addPin(Pin pin) {
 //        mHelper.insertPin(pin);
 //        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(pin.getLat(), pin.getLng())).title(pin.getTitle()).snippet(pin.getDescription()));
@@ -175,8 +153,9 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void populateMap(){
-        if (mPosts != null && !mPosts.isEmpty()) {
-            for (Post e : mPosts) {
+        ArrayList<Post> posts = ((MainActivity)getActivity()).getPosts();
+        if (posts != null && !posts.isEmpty()) {
+            for (Post e : posts) {
 //                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
 
                 mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLng())).title(e.getTitle()));

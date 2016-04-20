@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import ml.signpost.signpost.Models.Post;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -46,6 +47,7 @@ public class PostActivity extends AppCompatActivity implements SignRecyclerViewA
 
 
         setContentView(R.layout.activity_post_view_activity);
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.signpost.ml/api/")
