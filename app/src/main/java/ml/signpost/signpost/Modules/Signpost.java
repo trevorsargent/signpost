@@ -6,7 +6,9 @@ import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Models.Sign;
 import ml.signpost.signpost.Models.User;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 
@@ -44,4 +46,11 @@ public interface Signpost {
     @GET("posts")
     Call<List<Post>> allPosts();
 
+    @GET("post/title/{title}/signs")
+    Call<List<Sign>> signsForPost(
+        @Path("title") String title
+    );
+
+    @POST("signs")
+    Call<Sign> addSign(@Body Sign sign);
 }
