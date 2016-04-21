@@ -6,10 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import ml.signpost.signpost.Models.Post;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,19 +29,11 @@ public class PostActivity extends AppCompatActivity implements SignRecyclerViewA
     @Bind(R.id.activity_post_view_recycler_view)
     RecyclerView mRecyclerView;
     private Post mPost;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     private SignRecyclerViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_post_view_activity);
 
 
@@ -65,9 +53,6 @@ public class PostActivity extends AppCompatActivity implements SignRecyclerViewA
 
         mPost = getIntent().getParcelableExtra(MainPopularFragment.ARG_POST);
 
-        setContentView(R.layout.activity_post_view_activity);
-        Log.d("TAG", "post title: " + mPost.getTitle());
-
         backend.signsForPost(mPost.getTitle()).enqueue(new Callback<List<Sign>>() {
 
             @Override
@@ -85,11 +70,6 @@ public class PostActivity extends AppCompatActivity implements SignRecyclerViewA
                 Log.d("TAG", t.getMessage());
             }
         });
-
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
