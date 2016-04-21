@@ -27,8 +27,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainPopularFragment extends Fragment implements PostRecyclerViewAdapter.OnRowClickListener {
 
+public class MainPopularFragment extends Fragment implements PostRecyclerViewAdapter.OnRowClickListener {
 
     @Bind(R.id.fragment_main_popular_recycler_view)
     RecyclerView mRecyclerView;

@@ -44,10 +44,7 @@ public interface OnRowClickListener {
     public void onBindViewHolder(final SignRecyclerViewAdapter.SignViewHolder holder, int position) {
         Sign sign = mSigns.get(position);
 
-            //TODO make the view holder.
-//        holder.lng.setText(post.getLng()+"");
-//        holder.lat.setText(post.getLat()+"");
-//        holder.title.setText(post.getTitle());
+        holder.message.setText(sign.getMessage());
 
         holder.fullView.setOnClickListener(new View.OnClickListener() {
 
@@ -73,14 +70,8 @@ public interface OnRowClickListener {
 
 static class SignViewHolder extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.row_post_title_text)
-    TextView title;
-
-    @Bind(R.id.row_post_lat_num_text)
-    TextView lat;
-
-    @Bind(R.id.row_post_lng_num_text)
-    TextView lng;
+    @Bind(R.id.row_sign_message_text)
+    TextView message;
 
     View fullView;
 
