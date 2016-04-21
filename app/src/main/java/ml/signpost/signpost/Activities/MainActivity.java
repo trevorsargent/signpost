@@ -1,5 +1,6 @@
 package ml.signpost.signpost.Activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     Retrofit retrofit;
     Signpost backend;
+
+    public static final String ARG_POST = "POST.CODEPOST";
+    public static final int CODE_POST = 5;
 
     private ArrayList<Post> mPosts;
 
@@ -123,6 +127,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    public void startPostDetail(String postTitle){
+        Post post = null;
+        for(Post e: mPosts){
+            if(e.getTitle().equals(postTitle)){
+                post = e;
+            }
+        }
+
+        if(post!=null){
+            Intent intent = new Intent(this, PostActivity.class);
+            intent.putExtra(ARG_POST, post);
+            startActivityForResult(intent, CODE_POST);
+        }else{
+            Toast.makeText(this, "cannot find post", Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

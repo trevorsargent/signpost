@@ -1,6 +1,5 @@
 package ml.signpost.signpost.Fragments;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,28 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
-import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.Modules.SignpostSQLiteOpenHelper;
 import ml.signpost.signpost.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainMapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -43,8 +35,6 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
     MapView mMap;
     GoogleMap mGoogleMap;
     private SignpostSQLiteOpenHelper mHelper;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
 
 
     @Nullable
@@ -81,6 +71,16 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                ((MainActivity)getActivity()).startPostDetail(marker.getTitle());
+                return true;
+            }
+        });
+
+
 
         populateMap();
 
