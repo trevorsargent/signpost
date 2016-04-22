@@ -72,6 +72,8 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
     @Override
     public void onRowClick(Post post) {
 
+        ((MainActivity)getActivity()).startPostDetail(post.getTitle());
+
         Toast.makeText(getContext(), "congrats you clicked a row", Toast.LENGTH_SHORT).show();
     }
 }
