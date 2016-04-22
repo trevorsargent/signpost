@@ -1,12 +1,7 @@
 package ml.signpost.signpost.Fragments;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,10 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,32 +19,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
-import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.Modules.SignpostSQLiteOpenHelper;
 import ml.signpost.signpost.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainMapFragment extends Fragment implements OnMapReadyCallback {
 
+    private final String TAG = getClass().getSimpleName();
     private static MainMapFragment sInstance;
     @Bind(R.id.layout_map_view_map)
     MapView mMap;
     GoogleMap mGoogleMap;
-    private ArrayList<Post> mPosts;
     private SignpostSQLiteOpenHelper mHelper;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
-    public static final int CODE_PERMISSIONS_REQUEST = 0;
 
 
     @Nullable
@@ -80,7 +61,7 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("MainMapFragment", "onMapReady called");
+//        Log.d(TAG, "onMapReady called");
 
         mGoogleMap = googleMap;
 
@@ -134,14 +115,14 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         ArrayList<Post> posts = ((MainActivity)getActivity()).getPosts();
         if (posts != null && !posts.isEmpty()) {
             for (Post e : posts) {
-                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
+//                        Log.d(TAG, "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
 
                 mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLng())).title(e.getTitle()));
             }
         } else {
             Toast.makeText(getContext(), R.string.fragment_map_no_posts, Toast.LENGTH_LONG).show();
         }
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
+//        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
 
 
     }
