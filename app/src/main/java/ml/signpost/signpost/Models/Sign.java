@@ -1,50 +1,18 @@
 package ml.signpost.signpost.Models;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.UUID;
-
 /**
  * Created by student on 3/17/16.
  */
 public class Sign {
-
-    @SerializedName("id")
-    UUID mId;
-
-//    @SerializedName("post_id")
-//    UUID mPostId;
-//
-//    @SerializedName("user_id")
-//    UUID mUserId;
-
-    @SerializedName("message")
+    int mId;
+    int mPostId;
+    int mUserId;
     String mMessage;
 
-    public Sign(UUID mId, UUID mPostId, UUID mUserId, String mMessage) {
+    public Sign(int mId, int mPostId, int mUserId, String mMessage) {
         this.mId = mId;
-//        this.mPostId = mPostId;
-//        this.mUserId = mUserId;
+        this.mPostId = mPostId;
+        this.mUserId = mUserId;
         this.mMessage = mMessage;
-    }
-
-    public Sign() {
-
-    }
-
-    public String getMessage() {
-        return mMessage;
-    }
-
-    public String toString(){
-        return "{message: " + mMessage + "}";
-    }
-
-    public void setPostId(UUID postId) {
-        this.mId = postId;
-    }
-
-    public void setMessage(String message) {
-        this.mMessage = message;
     }
 }
