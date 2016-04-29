@@ -8,4 +8,11 @@
     <string name="fragment_map_no_posts">no posts in your area...</string>
     <string name="row_post_longitude">Longitude:</string>
     <string name="row_post_latitude">Latitude:</string>
+    <string name="activity_create_sign_name_edittext">Name</string>
+    <string name="activity_create_sign_message_edittext">Message</string>
+    <string name="activity_create_sign_save_button">Save</string>
+    <string name="fragment_create_sign_failure_nearby_post_get">Failed to Retrive Nearby Posts</string>
+    <string name="fragment_create_sign_newpost">Make New Post</string>
+    <string name="fragment_create_sign_item_clicked">You clicked an item</string>
+    <string name="fragment_create_sign_item_spinner_prompt">Select a post</string>
 </resources>

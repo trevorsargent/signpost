@@ -41,7 +41,7 @@ public interface Signpost {
     Call<List<Post>> locationPosts(
             @Path("lat") double lat,
             @Path("lng") double lng,
-            @Path("rad") int i);
+            @Path("rad") double i);
 
     @GET("posts")
     Call<List<Post>> allPosts();

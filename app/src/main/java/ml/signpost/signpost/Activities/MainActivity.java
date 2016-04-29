@@ -35,6 +35,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     Retrofit retrofit;
+
+    public Signpost getBackend() {
+        return backend;
+    }
+
     Signpost backend;
 
     public static final String ARG_POST = "POST.CODEPOST";
@@ -147,5 +152,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 }
 //https://github.com/aurelhubert/ahbottomnavigation

@@ -28,11 +28,23 @@ public class Sign {
         this.mMessage = mMessage;
     }
 
+    public Sign() {
+
+    }
+
     public String getMessage() {
         return mMessage;
     }
 
     public String toString(){
         return "{message: " + mMessage + "}";
+    }
+
+    public void setPostId(UUID postId) {
+        this.mId = postId;
+    }
+
+    public void setMessage(String message) {
+        this.mMessage = message;
     }
 }
