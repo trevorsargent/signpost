@@ -25,8 +25,10 @@ public interface Signpost {
 
     @GET("post/{id}/signs")
     Call<List<Sign>> signsForPost (
-            @Path("id") int id
+        @Path("id") int id
     );
+
+
 
     @GET("post/title/{title}")
     Call<List<Post>> postFromTitle (
@@ -41,6 +43,14 @@ public interface Signpost {
 
     @GET("posts")
     Call<List<Post>> allPosts();
+
+    @GET("users")
+    Call<List<User>> allUsers();
+
+    @GET("user/username")
+    Call<List<User>> userFromUsername(
+            @Path("username") String username
+    );
 
     @POST ("post/new")
     Call<List<Post>> createPost(@Body Post newPost);
