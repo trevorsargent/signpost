@@ -18,14 +18,13 @@ import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.R;
 
-
 public class MainPopularFragment extends Fragment implements PostRecyclerViewAdapter.OnRowClickListener {
+
 
     @Bind(R.id.fragment_main_popular_recycler_view)
     RecyclerView mRecyclerView;
     private PostRecyclerViewAdapter mAdapter;
     private static MainPopularFragment sInstance;
-
 
     public static MainPopularFragment newInstance() {
 
@@ -45,7 +44,10 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         super.onCreateView(inflater, container, savedInstanceState);
+
         View rootview = inflater.inflate(R.layout.fragment_main_popular, container, false);
 
         ButterKnife.bind(this, rootview);
@@ -71,9 +73,6 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
 
     @Override
     public void onRowClick(Post post) {
-
-        ((MainActivity)getActivity()).startPostDetail(post.getTitle());
-
         Toast.makeText(getContext(), "congrats you clicked a row", Toast.LENGTH_SHORT).show();
     }
 }

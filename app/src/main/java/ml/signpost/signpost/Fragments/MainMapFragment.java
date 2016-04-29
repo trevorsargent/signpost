@@ -16,7 +16,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import ml.signpost.signpost.R;
 
 public class MainMapFragment extends Fragment implements OnMapReadyCallback {
 
+    private final String TAG = getClass().getSimpleName();
     private static MainMapFragment sInstance;
     @Bind(R.id.layout_map_view_map)
     MapView mMap;
@@ -49,6 +49,7 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         mMap.getMapAsync(this);
         mMap.onCreate(savedInstanceState);
 
+
         return rootview;
     }
 
@@ -60,8 +61,7 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("MainMapFragment", "onMapReady called");
-
+//        Log.d(TAG, "onMapReady called");
 
         mGoogleMap = googleMap;
 
@@ -72,48 +72,8 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                ((MainActivity)getActivity()).startPostDetail(marker.getTitle());
-                return true;
-            }
-        });
-
-
-
         populateMap();
-
     }
-
-//    private void openDialogFragment(LatLng latLng) {
-//        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//        CreatePinDF df = CreatePinDF.newInstance();
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ARG_USER, mUsername);
-//        bundle.putInt(ARG_USERID, mHelper.idFromUserName(mUsername));
-//        bundle.putDouble(ARG_LAT, latLng.latitude);
-//        bundle.putDouble(ARG_LNG, latLng.longitude);
-//        df.setArguments(bundle);
-//        //df.setTargetFragment(this, PinMeAlertDialogFragment.REQUEST_CODE);
-//        //ft.addToBackStack(null);
-//
-//
-//        df.show(ft, "dialogfragment");
-//    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Bundle info=null;
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == PinMeAlertDialogFragment.REQUEST_CODE){
-//            info = data.getBundleExtra(PinMeAlertDialogFragment.ARG_PIN);
-//        }
-//
-//        mPin.setTitle(info.getString("title"));
-//        mPin.setDescription(info.getString("desc"));
-//        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mPin.getLat(), mPin.getLng())).title(mPin.getTitle()));
-//    }
 
     public static MainMapFragment newInstance() {
 
@@ -129,10 +89,6 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
-//    public void addPin(Pin pin) {
-//        mHelper.insertPin(pin);
-//        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(pin.getLat(), pin.getLng())).title(pin.getTitle()).snippet(pin.getDescription()));
-//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -152,16 +108,22 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void populateMap(){
+
+
+
+    private void populateMap() {
         ArrayList<Post> posts = ((MainActivity)getActivity()).getPosts();
         if (posts != null && !posts.isEmpty()) {
             for (Post e : posts) {
-//                        Log.d("TAG", "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
+//                        Log.d(TAG, "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
 
                 mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLng())).title(e.getTitle()));
             }
         } else {
             Toast.makeText(getContext(), R.string.fragment_map_no_posts, Toast.LENGTH_LONG).show();
         }
+//        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
+
+
     }
 }
