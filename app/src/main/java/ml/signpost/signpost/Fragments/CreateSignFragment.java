@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Models.Sign;
 import ml.signpost.signpost.Modules.Signpost;
@@ -35,13 +37,10 @@ import retrofit2.Response;
 /**
  * Created by Dominic on 4/28/2016.
  */
-public class CreateSignFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class CreateSignFragment extends Fragment implements AdapterView.OnItemSelectedListener, CreatePostDialogFragment.NewPostMadeListener {
 
-    public static final String ARG_LNG = "long";
+    public static final String ARG_LNG = "lng";
     public static final String ARG_LAT = "lat";
-
-    @Bind(R.id.activity_create_sign_mapview)
-    GoogleMap mGMap;
 
     @Bind(R.id.activity_create_sign_messageEditText)
     EditText mMessageEditText;
@@ -73,6 +72,8 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     double mLat;
     double mLng;
     String mSelectedItemText;
+    ArrayAdapter<String> mAdapter;
+    Sign mSign;
 
 
     @Nullable
@@ -85,13 +86,14 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
         mLat = getArguments().getDouble(ARG_LAT);
         mLng = getArguments().getDouble(ARG_LNG);
 
+        mBackend = ((MainActivity)getContext()).getBackend();
         mBackend.locationPosts(mLat, mLng, 5).enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 mPosts.addAll(response.body());
                 for(Post p: mPosts) {
                     //TODO this might be addresses not strings?
-                    mPostNames.add(p.getTitle());
+                    mPostNames.add(p.getTitle().toString());
                 }
             }
 
@@ -104,8 +106,8 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
         mPostNames.add(getString(R.string.fragment_create_sign_newpost));
 
         mSpinner = new Spinner(getContext());
-        ArrayAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.create_sign_spinner_row, mPostNames);
-        mSpinner.setAdapter(adapter);
+        mAdapter = new ArrayAdapter<>(getContext(), R.layout.create_sign_spinner_row, mPostNames);
+        mSpinner.setAdapter(mAdapter);
         mSpinner.setOnItemSelectedListener(this);
 
         return rootView;
@@ -132,21 +134,52 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
         else if(messageText.equals(""))
             Toast.makeText(getContext(), "No Message", Toast.LENGTH_SHORT).show();
         else {
-            Sign sign = new Sign();
+            mSign = new Sign();
 
-            if(mSelectedItemText.equals(R.string.fragment_create_sign_newpost)){
+            if(mSelectedItemText.equals(getString(R.string.fragment_create_sign_newpost))){
                 //make new post then add sign to post
+                makeNewPost();
+                mSign.setMessage(messageText);
+
             } else {
                 for(Post p: mPosts){
                     if(p.getTitle().equals(mSelectedItemText)) {
-                        sign.setPostId(p.getId());
-                        sign.setMessage(messageText);
+                        mSign.setPostId(p.getId());
+                        mSign.setMessage(messageText);
                         break;
                     }
                 }
             }
-
         }
+        //TODO update map with new post
+        ((MainActivity)getContext()).onBackPressed();
     }
 
+    private int getIndex(String title) {
+        for(int i = 0; i<mSpinner.getCount(); i++){
+            if(mSpinner.getItemAtPosition(i).toString().equals(title)) return i;
+        }
+        //Parul's idea (If you're getting a nullpointerexception then you know why)
+        return -1;
+    }
+
+    private void makeNewPost() {
+        Post newPost = new Post();
+        newPost.setLat(mLat);
+        newPost.setLng(mLng);
+        FragmentTransaction ft = ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_create_sign_main_layout, CreatePostDialogFragment.newInstance(newPost));
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override
+    public void onPostMade(Post newPost) {
+        mSelectedItemText = newPost.getTitle();
+        mAdapter.add(newPost.getTitle());
+        mAdapter.notifyDataSetChanged();
+        mSpinner.setSelection(getIndex(newPost.getTitle()));
+
+        mSign.setPostId(newPost.getId());
+    }
 }

@@ -2,10 +2,12 @@ package ml.signpost.signpost.Models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by student on 3/17/16.
  */
-public class Post {
+public class Post implements Serializable {
 
     @SerializedName("id")
     int mId;
@@ -26,15 +28,40 @@ public class Post {
         this.mLng = mLng;
     }
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int mId) {
+        this.mId = mId;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
     public double getLat() {
         return mLat;
+    }
+
+    public void setLat(double mLat) {
+        this.mLat = mLat;
     }
 
     public double getLng() {
         return mLng;
     }
 
-    public String getTitle() {
-        return mTitle;
+    public void setLng(double mLng) {
+        this.mLng = mLng;
     }
+
+    public Post() {
+
+    }
+
 }

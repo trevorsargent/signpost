@@ -1,13 +1,51 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ml.signpost.signpost.Fragments.CreatePostFragment">
+    tools:context=".Fragments.CreatePostDialogFragment"
+    android:orientation="vertical"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
+        android:id="@+id/fragment_dialog_create_post_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_dialog_new_post" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/fragment_dialog_create_post_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/fragment_dialog_enter_new_post_name"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        style="@android:style/Holo.Light.ButtonBar.AlertDialog"
+        >
+
+        <Button
+            android:id="@+id/fragment_dialog_create_post_positive_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/add"
+            style="@android:style/Holo.Light.ButtonBar.AlertDialog"
+            />
+
+        <Button
+            android:id="@+id/fragment_dialog_create_post_negative_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            style="@android:style/Holo.Light.ButtonBar.AlertDialog"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ml.signpost.signpost.Fragments.CreateSignFragment;
 import ml.signpost.signpost.Fragments.MainMapFragment;
 import ml.signpost.signpost.Fragments.MainPopularFragment;
 import ml.signpost.signpost.Models.Post;
@@ -77,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.activity_main_relative_layout, new CreateSignFragment());
+                ft.addToBackStack(null);
+                ft.commit();
             }
         });
 

@@ -53,7 +53,7 @@ public class PostActivity extends AppCompatActivity implements SignRecyclerViewA
 
         mPost = getIntent().getParcelableExtra(MainActivity.ARG_POST);
 
-        backend.signsForPost(mPost.getTitle()).enqueue(new Callback<List<Sign>>() {
+        backend.signsForPost(mPost.getId()).enqueue(new Callback<List<Sign>>() {
 
             @Override
             public void onResponse(Call<List<Sign>> call, Response<List<Sign>> response) {
