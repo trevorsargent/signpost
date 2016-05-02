@@ -23,6 +23,7 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
 
     @Bind(R.id.fragment_main_popular_recycler_view)
     RecyclerView mRecyclerView;
+
     private PostRecyclerViewAdapter mAdapter;
     private static MainPopularFragment sInstance;
 
