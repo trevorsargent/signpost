@@ -1,9 +1,11 @@
 package ml.signpost.signpost.Fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -109,10 +112,8 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
-
     private void populateMap() {
-        ArrayList<Post> posts = ((MainActivity)getActivity()).getPosts();
+        ArrayList<Post> posts = ((MainActivity) getActivity()).getPosts();
         if (posts != null && !posts.isEmpty()) {
             for (Post e : posts) {
 //                        Log.d(TAG, "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
@@ -122,8 +123,11 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         } else {
             Toast.makeText(getContext(), R.string.fragment_map_no_posts, Toast.LENGTH_LONG).show();
         }
-//        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
-
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(((MainActivity) getActivity()).getLastLocation().getLatitude(), ((MainActivity) getActivity()).getLastLocation().getLongitude()), 15));
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mGoogleMap.setMyLocationEnabled(true);
 
     }
 }
