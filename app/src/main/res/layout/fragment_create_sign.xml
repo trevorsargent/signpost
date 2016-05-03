@@ -14,7 +14,7 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/activity_create_sign_mapview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_alignParentTop="true"
         />
 
@@ -22,9 +22,8 @@
         android:id="@+id/activity_create_sign_radiogroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="5"
+        android:layout_below="@id/activity_create_sign_mapview"
         android:orientation="horizontal"
-        android:layout_alignBottom="@id/activity_create_sign_mapview"
         android:layout_marginTop="4dp"
         >
         <RadioButton
@@ -64,7 +63,7 @@
         android:id="@+id/activity_create_sign_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/activity_create_sign_radiogroup"
+        android:layout_below="@id/activity_create_sign_radiogroup"
         android:layout_margin="4dp"
         android:prompt="@string/fragment_create_sign_spinner_prompt"
         />
@@ -74,7 +73,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/activity_create_sign_message_edittext"
-        android:layout_alignBottom="@id/activity_create_sign_spinner"
+        android:layout_below="@id/activity_create_sign_spinner"
+        android:minLines="3"
         />
 
     <Button

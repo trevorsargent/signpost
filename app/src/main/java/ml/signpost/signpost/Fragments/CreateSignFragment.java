@@ -1,10 +1,11 @@
 package ml.signpost.signpost.Fragments;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,7 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,11 +25,7 @@ import butterknife.OnClick;
 import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Models.Sign;
-import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Dominic on 4/28/2016.
@@ -68,9 +61,7 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
 
     ArrayList<Post> mPosts;
     ArrayList<String> mPostNames;
-    Signpost mBackend;
-    double mLat;
-    double mLng;
+    Location mLocation;
     String mSelectedItemText;
     ArrayAdapter<String> mAdapter;
     Sign mSign;
@@ -82,26 +73,13 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
         View rootView = inflater.inflate(R.layout.fragment_create_sign, container, false);
         ButterKnife.bind(this, rootView);
 
-        //TODO Get location from arguments
-        mLat = getArguments().getDouble(ARG_LAT);
-        mLng = getArguments().getDouble(ARG_LNG);
-
-        mBackend = ((MainActivity)getContext()).getBackend();
-        mBackend.locationPosts(mLat, mLng, 5).enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                mPosts.addAll(response.body());
-                for(Post p: mPosts) {
-                    //TODO this might be addresses not strings?
-                    mPostNames.add(p.getTitle().toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
-                Toast.makeText(getContext(), R.string.fragment_create_sign_failure_nearby_post_get, Toast.LENGTH_LONG).show();
-            }
-        });
+        mLocation = ((MainActivity) getActivity()).getLastLocation();
+        mPosts = ((MainActivity)getActivity()).getPosts();
+        mPostNames = new ArrayList<>();
+        for (Post p: mPosts){
+            mPostNames.add(p.getTitle());
+            Log.d("TAG:", p.getTitle());
+        }
 
         mPostNames.add(getString(R.string.fragment_create_sign_newpost));
 
@@ -165,8 +143,8 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
 
     private void makeNewPost() {
         Post newPost = new Post();
-        newPost.setLat(mLat);
-        newPost.setLng(mLng);
+        newPost.setLat(mLocation.getLatitude());
+        newPost.setLng(mLocation.getLongitude());
         FragmentTransaction ft = ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_create_sign_main_layout, CreatePostDialogFragment.newInstance(newPost));
         ft.addToBackStack(null);
