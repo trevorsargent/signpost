@@ -160,4 +160,10 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
 
         mSign.setPostId(newPost.getId());
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity)getActivity()).showNav();
+    }
 }

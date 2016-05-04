@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Location mLastLocation;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+    private FloatingActionButton mFab;
 
     public Location getLastLocation() {
         return mLastLocation;
@@ -113,11 +114,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             createLocationRequest();
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
+        mFab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
 
 
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
+        if (mFab != null) {
+            mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     ft.addToBackStack(null);
                     ft.commit();
 
+                    mBottomNav.setVisibility(View.INVISIBLE);
                 }
             });
         }
@@ -303,6 +305,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     //UI
     void prepBottomBar() {
+        mBottomNav.setVisibility(View.VISIBLE);
         AHBottomNavigationItem map = new AHBottomNavigationItem("Map", R.drawable.ic_maps_place, Color.parseColor("#455C65"));
         AHBottomNavigationItem popular = new AHBottomNavigationItem("Popular", R.drawable.ic_maps_local_bar, Color.parseColor("#455C65"));
         AHBottomNavigationItem nearby = new AHBottomNavigationItem("Nearby", R.drawable.ic_maps_local_restaurant, Color.parseColor("#455C65"));
@@ -324,14 +327,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     fm.beginTransaction()
                             .replace(R.id.activity_main_frame_layout, MainMapFragment.newInstance())
                             .commit();
+                            mFab.setVisibility(View.VISIBLE);
                 } else if (position == 1) {
                     fm.beginTransaction()
                             .replace(R.id.activity_main_frame_layout, MainPopularFragment.newInstance())
                             .commit();
+                            mFab.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
+    }
+
+    public void showNav(){
+        mBottomNav.setVisibility(View.VISIBLE);
     }
 
     public void startPostDetail(String postTitle){
