@@ -27,4 +27,5 @@
     <string name="fragment_login_login">login</string>
     <string name="fragment_login_username">username</string>
     <string name="fragment_login_add_user">add user</string>
+    <string name="select_a_post">Select a post</string>
 </resources>

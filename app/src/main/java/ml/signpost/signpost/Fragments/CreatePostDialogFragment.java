@@ -1,8 +1,10 @@
 package ml.signpost.signpost.Fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -25,7 +27,7 @@ public class CreatePostDialogFragment extends DialogFragment {
 
     public static final String ARG_POST = "post";
 
-    EditText mEditText;
+    TextInputEditText mEditText;
 
     Post mPost;
     Signpost mBackend;
@@ -44,7 +46,9 @@ public class CreatePostDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(getActivity().getLayoutInflater().inflate(R.layout.fragment_create_post,null));
+        View rootView = getActivity().getLayoutInflater().inflate(R.layout.fragment_create_post,null);
+        builder.setView(rootView);
+        mEditText = (TextInputEditText) rootView.findViewById(R.id.fragment_dialog_title_edittext);
         builder.setTitle(R.string.create_post)
                 .setPositiveButton(R.string.add,
                                 new DialogInterface.OnClickListener() {
@@ -75,27 +79,29 @@ public class CreatePostDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_create_post,container,false);
-        mEditText = (EditText) rootView.findViewById(R.id.layout_fragment_dialog_title_edittext);
+ //       View rootView = inflater.inflate(R.layout.fragment_create_post,container,false);
+        //mEditText = (TextInputEditText) rootView.findViewById(R.id.fragment_dialog_title_edittext);
+//
         mPost = (Post) getArguments().getSerializable(ARG_POST);
 //        mPost.nullId();
         mBackend = ((MainActivity)getContext()).getBackend();
         mListener = (CreateSignFragment)getTargetFragment();
-        return rootView;
+//        return rootView;
+        return null;
     }
 
 
     public void onPositiveButtonClicked(){
-        mEditText.clearFocus();
+       // mEditText.clearFocus();
         //make sure no posts have the same name somehow
         Log.d("TAG", "onPositiveButtonClicked() called");
         String title = mEditText.getText().toString();
+        Log.d("TAG", "");
         //TODO figure out why this is empty1?!?!?
-        title = "miller"; // testing purposes
+        //title = "miller"; // testing purposes
         if(title.trim().length() > 0) {
 
             mPost.setTitle(title);
-            Log.d("TAG", mPost.toString());
             mBackend.createPost(mPost).enqueue(new Callback<Post>() {
                 @Override
                 public void onResponse(Call<Post> call, Response<Post> response) {
@@ -106,6 +112,7 @@ public class CreatePostDialogFragment extends DialogFragment {
                         dismiss();
                     }
                     mListener.onPostMade(mPost);
+                    Log.d("Post title: ", mPost.getTitle());
                     dismiss();
                 }
 

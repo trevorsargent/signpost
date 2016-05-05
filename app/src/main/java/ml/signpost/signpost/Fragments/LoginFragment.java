@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public class LoginFragment extends Fragment {
 
     Signpost mBackend;
 
+    String mUsername;
+
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -61,7 +64,7 @@ public class LoginFragment extends Fragment {
         mBackend.getUser(username).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if(response.body().isEmpty()){
+                if(response.body()==null){
                     Toast.makeText(getContext(), "User does not exist!", Toast.LENGTH_SHORT).show();
                 } else {
                     MainActivity activity = ((MainActivity)getContext());
@@ -79,35 +82,45 @@ public class LoginFragment extends Fragment {
     }
 
     @OnClick(R.id.fragment_login_adduser_button)
-    void onAddUserButtonClicked(){
-        final String username = mEditText.getText().toString().trim();
-        mBackend.getUser(username).enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                Toast.makeText(getContext(), "Username already exists!", Toast.LENGTH_SHORT).show();
-            }
+    void onAddUserButtonClicked() {
+        mUsername = mEditText.getText().toString().trim();
+        if (mUsername.equals("")) {
+            Toast.makeText(getContext(), "Enter username", Toast.LENGTH_SHORT).show();
+        } else {
+            mBackend.getUser(mUsername).enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                //TODO danger zone might not have ref to username
-                if(!username.equals("")){
-                    User user = new User();
-                    user.setUserName(username);
-                    mBackend.createUser(new User());
-                    mBackend.getUser(username).enqueue(new Callback<List<User>>() {
-                        @Override
-                        public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                            ((MainActivity)getContext()).setUser(response.body().get(0));
-                            ((MainActivity)getContext()).onBackPressed();
-                        }
+                    if (response.body()==null) {
+                        Log.d("TAG", "username not found hopefully boop");
+                        User user = new User();
+                        user.setUserName(mUsername);
+                        mBackend.createUser(user);
+                        mBackend.getUser(mUsername).enqueue(new Callback<List<User>>() {
+                            @Override
+                            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                                if(response.body()==null)Log.d("TAG","response was null :'(");
+                                ((MainActivity) getContext()).setUser(response.body().get(0));
+                                ((MainActivity) getContext()).onBackPressed();
+                            }
 
-                        @Override
-                        public void onFailure(Call<List<User>> call, Throwable t) {
-                            Toast.makeText(getContext(), "Server error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<List<User>> call, Throwable t) {
+                                Toast.makeText(getContext(), "Server error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getContext(), "Username already exists!", Toast.LENGTH_SHORT).show();
+
+                    }
                 }
-            }
-        });
+
+                @Override
+                public void onFailure(Call<List<User>> call, Throwable t) {
+                    //TODO danger zone might not have ref to username
+
+                }
+            });
+        }
     }
 }

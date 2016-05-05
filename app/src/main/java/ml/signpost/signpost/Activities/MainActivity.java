@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Location mLastLocation;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    private FloatingActionButton mFab;
+    public FloatingActionButton mFab;
 
     public Location getLastLocation() {
         return mLastLocation;
@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     ft.addToBackStack(null);
                     ft.commit();
 
+                    mFab.setVisibility(View.INVISIBLE);
                     mBottomNav.setVisibility(View.INVISIBLE);
                 }
             });
@@ -155,6 +156,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        mFab.setVisibility(View.VISIBLE);
+        super.onBackPressed();
     }
 
     @Override

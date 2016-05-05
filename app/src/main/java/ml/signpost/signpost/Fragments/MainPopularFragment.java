@@ -93,7 +93,7 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
         if(item.getItemId()==0){
             //take to login fragment
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_main_popular_layout, LoginFragment.newInstance());
+            ft.replace(R.id.activity_main_relative_layout, LoginFragment.newInstance());
             ft.addToBackStack(null);
             ft.commit();
             return true;

@@ -85,6 +85,8 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
         mLocation = ((MainActivity) getActivity()).getLastLocation();
         mPosts = ((MainActivity) getActivity()).getPosts();
         mPostNames = new ArrayList<>();
+
+        mPostNames.add(this.getString(R.string.select_a_post));
         for (Post p : mPosts) {
             mPostNames.add(p.getTitle());
 //            Log.d("TAG:", p.getTitle());
@@ -102,9 +104,10 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getContext(), R.string.fragment_create_sign_item_clicked, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(), R.string.fragment_create_sign_item_clicked, Toast.LENGTH_SHORT).show();
         mSelectedItemText = (String) parent.getItemAtPosition(position);
-        if (mSelectedItemText.equals("Make New Post")) {
+        if(mSelectedItemText.equals(R.string.select_a_post)) {}
+        else if (mSelectedItemText.equals("Make New Post")) {
             makeNewPost();
         }
         mParentPost = getPost(mSelectedItemText);
@@ -119,7 +122,7 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     public void onSaveButtonClicked() {
         String messageText = mMessageEditText.getText().toString().trim();
 
-        if (mParentPost == null)
+        if (mParentPost == null || mSelectedItemText.equals(R.string.select_a_post))
             Toast.makeText(getContext(), "Please select a post", Toast.LENGTH_LONG).show();
         else if (messageText.equals(""))
             Toast.makeText(getContext(), "No Message", Toast.LENGTH_SHORT).show();
@@ -136,6 +139,8 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
                     mSign = response.body();
 
                     Log.d("TAG", "sign created on server: " + mSign.toString());
+                    ((MainActivity)getContext()).mFab.setVisibility(View.VISIBLE);
+                    ((MainActivity) getContext()).onBackPressed();
                 }
 
                 @Override
@@ -146,7 +151,7 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
 
 
         }
-        ((MainActivity) getContext()).onBackPressed();
+        //((MainActivity) getContext()).onBackPressed();
 
     }
 
