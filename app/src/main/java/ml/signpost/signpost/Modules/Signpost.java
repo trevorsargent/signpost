@@ -23,7 +23,7 @@ public interface Signpost {
         @Path("username") String username
     );
 
-    @GET("post/{id}/signs")
+    @GET("post/id/{id}/signs")
     Call<List<Sign>> signsForPost (
         @Path("id") int id
     );

@@ -321,12 +321,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     void prepBottomBar() {
         mBottomNav.setVisibility(View.VISIBLE);
         AHBottomNavigationItem map = new AHBottomNavigationItem("Map", R.drawable.ic_maps_place, Color.parseColor("#455C65"));
-        AHBottomNavigationItem popular = new AHBottomNavigationItem("Popular", R.drawable.ic_maps_local_bar, Color.parseColor("#455C65"));
-        AHBottomNavigationItem nearby = new AHBottomNavigationItem("Nearby", R.drawable.ic_maps_local_restaurant, Color.parseColor("#455C65"));
+        AHBottomNavigationItem nearby = new AHBottomNavigationItem("Nearby", R.drawable.ic_maps_local_bar, Color.parseColor("#455C65"));
+       // AHBottomNavigationItem nearby = new AHBottomNavigationItem("Nearby", R.drawable.ic_maps_local_restaurant, Color.parseColor("#455C65"));
 
         mBottomNav.addItem(map);
-        mBottomNav.addItem(popular);
         mBottomNav.addItem(nearby);
+       // mBottomNav.addItem(nearby);
 
         mBottomNav.setDefaultBackgroundColor(R.color.colorPrimaryDark);
 

@@ -18,45 +18,45 @@
         android:layout_height="200dp"
         />
 
-    <RadioGroup
-        android:id="@+id/activity_create_sign_radiogroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="4dp"
-        >
-        <RadioButton
-            android:id="@+id/activity_create_sign_radiobutton1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-        <RadioButton
-            android:id="@+id/activity_create_sign_radiobutton2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-        <RadioButton
-            android:id="@+id/activity_create_sign_radiobutton3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-        <RadioButton
-            android:id="@+id/activity_create_sign_radiobutton4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-        <RadioButton
-            android:id="@+id/activity_create_sign_radiobutton5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+    <!--<RadioGroup-->
+        <!--android:id="@+id/activity_create_sign_radiogroup"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_marginTop="4dp"-->
+        <!--&gt;-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/activity_create_sign_radiobutton1"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/activity_create_sign_radiobutton2"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/activity_create_sign_radiobutton3"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/activity_create_sign_radiobutton4"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/activity_create_sign_radiobutton5"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
 
-    </RadioGroup>
+    <!--</RadioGroup>-->
 
     <Spinner
         android:id="@+id/activity_create_sign_spinner"

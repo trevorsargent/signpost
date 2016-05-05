@@ -42,20 +42,20 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     @Bind(R.id.activity_create_sign_messageEditText)
     EditText mMessageEditText;
 
-    @Bind(R.id.activity_create_sign_radiobutton1)
-    RadioButton mRadioButton1;
-
-    @Bind(R.id.activity_create_sign_radiobutton2)
-    RadioButton mRadioButton2;
-
-    @Bind(R.id.activity_create_sign_radiobutton3)
-    RadioButton mRadioButton3;
-
-    @Bind(R.id.activity_create_sign_radiobutton4)
-    RadioButton mRadioButton4;
-
-    @Bind(R.id.activity_create_sign_radiobutton5)
-    RadioButton mRadioButton5;
+//    @Bind(R.id.activity_create_sign_radiobutton1)
+//    RadioButton mRadioButton1;
+//
+//    @Bind(R.id.activity_create_sign_radiobutton2)
+//    RadioButton mRadioButton2;
+//
+//    @Bind(R.id.activity_create_sign_radiobutton3)
+//    RadioButton mRadioButton3;
+//
+//    @Bind(R.id.activity_create_sign_radiobutton4)
+//    RadioButton mRadioButton4;
+//
+//    @Bind(R.id.activity_create_sign_radiobutton5)
+//    RadioButton mRadioButton5;
 
     @Bind(R.id.activity_create_sign_spinner)
     Spinner mSpinner;
