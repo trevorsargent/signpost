@@ -183,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         double lng = location.getLongitude();
         Log.d(TAG, "LOC - Lat: " + lat + " Lng: " + lng);
 
-        backend.locationPosts(lat,lng, 12).enqueue(new Callback<List<Post>>() {
+        backend.allPosts().enqueue(new Callback<List<Post>>() {
+//        backend.locationPosts(lat,lng, 15).enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 Log.d("MainMapFragment", "onResponse called");
@@ -295,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         Toast.makeText(getApplicationContext(), "Location changed!", Toast.LENGTH_SHORT).show();
 
-        getCurrentLocation();
+//        getCurrentLocation();
     }
 
     @Override

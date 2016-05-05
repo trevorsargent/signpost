@@ -1,51 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.CreatePostDialogFragment"
     android:orientation="vertical"
-    >
+    android:padding="16dp"
+    android:minWidth="200dp">
 
-
-    <TextView
-        android:id="@+id/fragment_dialog_create_post_title"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_dialog_new_post" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/fragment_dialog_create_post_edittext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/fragment_dialog_enter_new_post_name"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal"
-        style="@android:style/Holo.Light.ButtonBar.AlertDialog"
-        >
-
-        <Button
-            android:id="@+id/fragment_dialog_create_post_positive_button"
-            android:layout_width="0dp"
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/layout_fragment_dialog_title_edittext"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/add"
-            style="@android:style/Holo.Light.ButtonBar.AlertDialog"
-            />
+            android:hint="@string/post_title" />
+    </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/fragment_dialog_create_post_negative_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel"
-            style="@android:style/Holo.Light.ButtonBar.AlertDialog"
-            />
-
-    </LinearLayout>
 
 </LinearLayout>

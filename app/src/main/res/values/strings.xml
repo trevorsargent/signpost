@@ -18,8 +18,10 @@
     <string name="fragment_dialog_new_post">New Post</string>
     <string name="fragment_dialog_enter_new_post_name">Enter new post name</string>
     <string name="add">Add</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="failed_to_make_post">Failed to Make Post</string>
     <string name="please_enter_name">Please enter name</string>
     <string name="fragment_create_sign_spinner_prompt">Select a post</string>
+    <string name="post_title">Post Title</string>
+    <string name="create_post">Create Post</string>
 </resources>

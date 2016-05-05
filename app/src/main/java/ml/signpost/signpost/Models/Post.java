@@ -64,4 +64,12 @@ public class Post implements Serializable {
 
     }
 
+    public String toString(){
+        return "Title: " + mTitle +
+                ", id: " + mId +
+                ", lat: " + mLat +
+                ", lng: " + mLng;
+
+    }
+
 }

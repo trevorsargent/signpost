@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,7 +26,11 @@ import butterknife.OnClick;
 import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Models.Sign;
+import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Dominic on 4/28/2016.
@@ -65,26 +70,30 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     String mSelectedItemText;
     ArrayAdapter<String> mAdapter;
     Sign mSign;
+    Signpost mBackend;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_create_sign, container, false);
+
         ButterKnife.bind(this, rootView);
 
+        mBackend = ((MainActivity) getActivity()).getBackend();
+
         mLocation = ((MainActivity) getActivity()).getLastLocation();
-        mPosts = ((MainActivity)getActivity()).getPosts();
+        mPosts = ((MainActivity) getActivity()).getPosts();
         mPostNames = new ArrayList<>();
-        for (Post p: mPosts){
+        for (Post p : mPosts) {
             mPostNames.add(p.getTitle());
-            Log.d("TAG:", p.getTitle());
+//            Log.d("TAG:", p.getTitle());
         }
 
         mPostNames.add(getString(R.string.fragment_create_sign_newpost));
 
-        mSpinner = new Spinner(getContext());
-        mAdapter = new ArrayAdapter<>(getContext(), R.layout.create_sign_spinner_row, mPostNames);
+        mAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, mPostNames);
+        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mAdapter);
         mSpinner.setOnItemSelectedListener(this);
 
@@ -93,9 +102,11 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //TODO set post at location as parent post
         Toast.makeText(getContext(), R.string.fragment_create_sign_item_clicked, Toast.LENGTH_SHORT).show();
         mSelectedItemText = (String) parent.getItemAtPosition(position);
+        if(mSelectedItemText.equals("Make New Post")){
+            makeNewPost();
+        }
     }
 
     @Override
@@ -104,38 +115,51 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     }
 
     @OnClick(R.id.activity_create_sign_saveButton)
-    public void onSaveButtonClicked(){
+    public void onSaveButtonClicked() {
         String messageText = mMessageEditText.getText().toString().trim();
 
-        if(mSelectedItemText!=null)
+        if (mSelectedItemText != null)
             Toast.makeText(getContext(), "Please select a post", Toast.LENGTH_LONG).show();
-        else if(messageText.equals(""))
+        else if (messageText.equals(""))
             Toast.makeText(getContext(), "No Message", Toast.LENGTH_SHORT).show();
         else {
             mSign = new Sign();
+            for (Post p : mPosts) {
+                if (p.getTitle().equals(mSelectedItemText)) {
+                    Log.d("TAG", "gonna do the thing");
+                    mSign.setPostId(p.getId());
+                    mSign.setMessage(messageText);
+                    mBackend.createSign(mSign).enqueue(new Callback<List<Sign>>() {
+                        @Override
+                        public void onResponse(Call<List<Sign>> call, Response<List<Sign>> response) {
+                            mSign = response.body().iterator().next();
+                            Log.d("TAG", "sign created on server");
+                        }
 
-            if(mSelectedItemText.equals(getString(R.string.fragment_create_sign_newpost))){
-                //make new post then add sign to post
-                makeNewPost();
-                mSign.setMessage(messageText);
-
-            } else {
-                for(Post p: mPosts){
-                    if(p.getTitle().equals(mSelectedItemText)) {
-                        mSign.setPostId(p.getId());
-                        mSign.setMessage(messageText);
-                        break;
-                    }
+                        @Override
+                        public void onFailure(Call<List<Sign>> call, Throwable t) {
+                            Log.d("TAG", t.getLocalizedMessage());
+                        }
+                    });
+                    break;
                 }
             }
+
         }
         //TODO update map with new post
-        ((MainActivity)getContext()).onBackPressed();
+        ((MainActivity)
+
+                getContext()
+
+        ).
+
+                onBackPressed();
+
     }
 
     private int getIndex(String title) {
-        for(int i = 0; i<mSpinner.getCount(); i++){
-            if(mSpinner.getItemAtPosition(i).toString().equals(title)) return i;
+        for (int i = 0; i < mSpinner.getCount(); i++) {
+            if (mSpinner.getItemAtPosition(i).toString().equals(title)) return i;
         }
         //Parul's idea (If you're getting a nullpointerexception then you know why)
         return -1;
@@ -145,25 +169,23 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
         Post newPost = new Post();
         newPost.setLat(mLocation.getLatitude());
         newPost.setLng(mLocation.getLongitude());
-        FragmentTransaction ft = ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_create_sign_main_layout, CreatePostDialogFragment.newInstance(newPost));
-        ft.addToBackStack(null);
-        ft.commit();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        CreatePostDialogFragment df = CreatePostDialogFragment.newInstance(newPost);
+        df.show(ft, "dialog fragment!");
     }
 
     @Override
     public void onPostMade(Post newPost) {
         mSelectedItemText = newPost.getTitle();
+        mPosts.add(newPost);
         mAdapter.add(newPost.getTitle());
         mAdapter.notifyDataSetChanged();
         mSpinner.setSelection(getIndex(newPost.getTitle()));
-
-        mSign.setPostId(newPost.getId());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((MainActivity)getActivity()).showNav();
+        ((MainActivity) getActivity()).showNav();
     }
 }
