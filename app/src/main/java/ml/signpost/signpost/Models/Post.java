@@ -72,4 +72,8 @@ public class Post implements Serializable {
 
     }
 
+
+//    public void nullId() {
+//        mId = null;
+//    }
 }

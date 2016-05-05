@@ -53,7 +53,7 @@ public interface Signpost {
     );
 
     @POST ("post/new")
-    Call<List<Post>> createPost(@Body Post newPost);
+    Call<Post> createPost(@Body Post newPost);
 
     @POST ("user/new")
     Call<List<User>> createUser(@Body User newUser);

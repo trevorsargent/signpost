@@ -167,10 +167,12 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
 
     private void makeNewPost() {
         Post newPost = new Post();
+
         newPost.setLat(mLocation.getLatitude());
         newPost.setLng(mLocation.getLongitude());
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         CreatePostDialogFragment df = CreatePostDialogFragment.newInstance(newPost);
+        df.setTargetFragment(this, 0);
         df.show(ft, "dialog fragment!");
     }
 

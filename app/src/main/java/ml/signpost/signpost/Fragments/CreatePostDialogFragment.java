@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.List;
-
 import ml.signpost.signpost.Activities.MainActivity;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Modules.Signpost;
@@ -80,6 +78,7 @@ public class CreatePostDialogFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.fragment_create_post,container,false);
         mEditText = (EditText) rootView.findViewById(R.id.layout_fragment_dialog_title_edittext);
         mPost = (Post) getArguments().getSerializable(ARG_POST);
+//        mPost.nullId();
         mBackend = ((MainActivity)getContext()).getBackend();
         mListener = (CreateSignFragment)getTargetFragment();
         return rootView;
@@ -91,21 +90,23 @@ public class CreatePostDialogFragment extends DialogFragment {
         //make sure no posts have the same name somehow
         Log.d("TAG", "onPositiveButtonClicked() called");
         String title = mEditText.getText().toString();
-        Log.d("TAG", title);
+        //TODO figure out why this is empty1?!?!?
+        title = "miller"; // testing purposes
         if(title.trim().length() > 0) {
 
             mPost.setTitle(title);
             Log.d("TAG", mPost.toString());
-            mBackend.createPost(mPost).enqueue(new Callback<List<Post>>() {
+            mBackend.createPost(mPost).enqueue(new Callback<Post>() {
                 @Override
-                public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                    mPost = response.body().iterator().next();
+                public void onResponse(Call<Post> call, Response<Post> response) {
+                    mPost = response.body();
+                    Log.d("TAG", mPost.toString());
                     mListener.onPostMade(mPost);
                     dismiss();
                 }
 
                 @Override
-                public void onFailure(Call<List<Post>> call, Throwable t) {
+                public void onFailure(Call<Post> call, Throwable t) {
                     Log.d("TAG", t.getLocalizedMessage());
                     Toast.makeText(getContext(), R.string.failed_to_make_post, Toast.LENGTH_SHORT).show();
                 }
