@@ -36,6 +36,7 @@ import ml.signpost.signpost.Fragments.CreateSignFragment;
 import ml.signpost.signpost.Fragments.MainMapFragment;
 import ml.signpost.signpost.Fragments.MainPopularFragment;
 import ml.signpost.signpost.Models.Post;
+import ml.signpost.signpost.Models.User;
 import ml.signpost.signpost.Modules.Signpost;
 import ml.signpost.signpost.R;
 import retrofit2.Call;
@@ -90,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         return mPosts;
     }
 
+    private User mUser;
+
+    public void setUser(User user) {
+        mUser = user;
+    }
 
     @Bind(R.id.activity_main_bottom_navigation)
     AHBottomNavigation mBottomNav;

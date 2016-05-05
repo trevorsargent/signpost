@@ -24,4 +24,7 @@
     <string name="fragment_create_sign_spinner_prompt">Select a post</string>
     <string name="post_title">Post Title</string>
     <string name="create_post">Create Post</string>
+    <string name="fragment_login_login">login</string>
+    <string name="fragment_login_username">username</string>
+    <string name="fragment_login_add_user">add user</string>
 </resources>

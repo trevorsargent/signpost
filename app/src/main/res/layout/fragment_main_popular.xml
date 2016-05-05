@@ -1,5 +1,5 @@
 <android.support.v7.widget.RecyclerView
-    android:id="@+id/fragment_main_popular_recycler_view"
+    android:id="@+id/fragment_main_popular_layout"
     android:paddingTop="?android:attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
