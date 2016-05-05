@@ -25,7 +25,7 @@ import ml.signpost.signpost.R;
 public class MainPopularFragment extends Fragment implements PostRecyclerViewAdapter.OnRowClickListener {
 
 
-    @Bind(R.id.fragment_main_popular_recycler_view)
+    @Bind(R.id.fragment_main_popular_layout)
     RecyclerView mRecyclerView;
 
     private PostRecyclerViewAdapter mAdapter;
