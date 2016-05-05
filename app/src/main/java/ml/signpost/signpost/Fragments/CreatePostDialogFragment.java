@@ -100,7 +100,11 @@ public class CreatePostDialogFragment extends DialogFragment {
                 @Override
                 public void onResponse(Call<Post> call, Response<Post> response) {
                     mPost = response.body();
-                    Log.d("TAG", mPost.toString());
+//                    Log.d("TAG", mPost.toString());
+                    if(mPost==null){
+                        Toast.makeText(getContext(), R.string.failed_to_make_post, Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    }
                     mListener.onPostMade(mPost);
                     dismiss();
                 }

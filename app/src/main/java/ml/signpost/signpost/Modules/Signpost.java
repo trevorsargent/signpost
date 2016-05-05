@@ -59,7 +59,7 @@ public interface Signpost {
     Call<List<User>> createUser(@Body User newUser);
 
     @POST ("sign/new")
-    Call<List<Sign>> createSign(@Body Sign newSign);
+    Call<Sign> createSign(@Body Sign newSign);
 
     @PUT ("post/update")
     Call<List<Post>> updatePost(@Body Post updatePost);

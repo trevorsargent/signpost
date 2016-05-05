@@ -1,12 +1,22 @@
 package ml.signpost.signpost.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by student on 3/17/16.
  */
 public class Sign {
+
+    @SerializedName("id")
     int mId;
+
+    @SerializedName("post_id")
     int mPostId;
+
+    @SerializedName("user_id")
     int mUserId;
+
+    @SerializedName("message")
     String mMessage;
 
     public Sign(int mId, int mPostId, int mUserId, String mMessage) {
@@ -50,5 +60,11 @@ public class Sign {
 
     public void setMessage(String message) {
         this.mMessage = message;
+    }
+
+    public String toString(){
+        return "id: " + mId +
+                "postId: " + mPostId +
+                "message: " +mMessage;
     }
 }

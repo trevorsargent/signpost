@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,6 +70,7 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     ArrayAdapter<String> mAdapter;
     Sign mSign;
     Signpost mBackend;
+    Post mParentPost;
 
 
     @Nullable
@@ -104,9 +104,10 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getContext(), R.string.fragment_create_sign_item_clicked, Toast.LENGTH_SHORT).show();
         mSelectedItemText = (String) parent.getItemAtPosition(position);
-        if(mSelectedItemText.equals("Make New Post")){
+        if (mSelectedItemText.equals("Make New Post")) {
             makeNewPost();
         }
+        mParentPost = getPost(mSelectedItemText);
     }
 
     @Override
@@ -118,42 +119,34 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     public void onSaveButtonClicked() {
         String messageText = mMessageEditText.getText().toString().trim();
 
-        if (mSelectedItemText != null)
+        if (mParentPost == null)
             Toast.makeText(getContext(), "Please select a post", Toast.LENGTH_LONG).show();
         else if (messageText.equals(""))
             Toast.makeText(getContext(), "No Message", Toast.LENGTH_SHORT).show();
         else {
             mSign = new Sign();
-            for (Post p : mPosts) {
-                if (p.getTitle().equals(mSelectedItemText)) {
-                    Log.d("TAG", "gonna do the thing");
-                    mSign.setPostId(p.getId());
-                    mSign.setMessage(messageText);
-                    mBackend.createSign(mSign).enqueue(new Callback<List<Sign>>() {
-                        @Override
-                        public void onResponse(Call<List<Sign>> call, Response<List<Sign>> response) {
-                            mSign = response.body().iterator().next();
-                            Log.d("TAG", "sign created on server");
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<Sign>> call, Throwable t) {
-                            Log.d("TAG", t.getLocalizedMessage());
-                        }
-                    });
-                    break;
+            Log.d("TAG", "gonna do the thing");
+            mSign.setPostId(mParentPost.getId());
+            mSign.setMessage(messageText);
+            Log.d("TAG", mSign.toString());
+            mBackend.createSign(mSign).enqueue(new Callback<Sign>() {
+                @Override
+                public void onResponse(Call<Sign> call, Response<Sign> response) {
+                    mSign = response.body();
+
+                    Log.d("TAG", "sign created on server: " + mSign.toString());
                 }
-            }
+
+                @Override
+                public void onFailure(Call<Sign> call, Throwable t) {
+                    Log.d("TAG", t.getLocalizedMessage());
+                }
+            });
+
 
         }
-        //TODO update map with new post
-        ((MainActivity)
-
-                getContext()
-
-        ).
-
-                onBackPressed();
+        ((MainActivity) getContext()).onBackPressed();
 
     }
 
@@ -163,6 +156,15 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
         }
         //Parul's idea (If you're getting a nullpointerexception then you know why)
         return -1;
+    }
+
+    private Post getPost(String title) {
+        for (Post p : mPosts) {
+            if (p.getTitle().equals(title)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     private void makeNewPost() {
@@ -179,6 +181,7 @@ public class CreateSignFragment extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onPostMade(Post newPost) {
         mSelectedItemText = newPost.getTitle();
+        mParentPost = newPost;
         mPosts.add(newPost);
         mAdapter.add(newPost.getTitle());
         mAdapter.notifyDataSetChanged();
