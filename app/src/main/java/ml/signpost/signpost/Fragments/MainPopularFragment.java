@@ -83,7 +83,7 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
 
     @Override
     public void onRowClick(Post post) {
-        Toast.makeText(getContext(), "congrats you clicked a row", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(), "congrats you clicked a row", Toast.LENGTH_SHORT).show();
 
         //create new activity
         Intent intent = new Intent(getActivity(), PostActivity.class);
@@ -91,22 +91,22 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
         startActivity(intent);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.add(0, 0, 0, "Login");
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==0){
-            //take to login fragment
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.activity_main_relative_layout, LoginFragment.newInstance());
-            ft.addToBackStack(null);
-            ft.commit();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        menu.add(0, 0, 0, "Login");
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if(item.getItemId()==0){
+//            //take to login fragment
+//            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.activity_main_relative_layout, LoginFragment.newInstance());
+//            ft.addToBackStack(null);
+//            ft.commit();
+//            return true;
+//        } else {
+//            return super.onOptionsItemSelected(item);
+//        }
+//    }
 }

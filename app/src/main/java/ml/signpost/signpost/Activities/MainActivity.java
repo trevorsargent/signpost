@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onLocationChanged(Location location) {
         mLastLocation = location;
 
-        Toast.makeText(getApplicationContext(), "Location changed!", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(), "Location changed!", Toast.LENGTH_SHORT).show();
 
 //        getCurrentLocation();
     }

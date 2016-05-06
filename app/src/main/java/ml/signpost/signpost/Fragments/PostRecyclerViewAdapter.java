@@ -47,7 +47,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
         holder.lng.setText(post.getLng()+"");
         holder.lat.setText(post.getLat()+"");
-        holder.title.setText(post.getTitle());
+        holder.title.setText(post.getTitle().substring(0,1).toUpperCase()+ post.getTitle().substring(1).toLowerCase());
 
         holder.fullView.setOnClickListener(new View.OnClickListener() {
 

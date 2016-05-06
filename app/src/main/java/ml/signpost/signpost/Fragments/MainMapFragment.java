@@ -18,6 +18,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -68,6 +70,7 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
 
         mGoogleMap = googleMap;
 
+
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -93,27 +96,28 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.add(0, 0, 0, "logout");
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case 0:
-                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.activity_main_frame_layout, new LoginFragment());
-                transaction.commit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        menu.add(0, 0, 0, "logout");
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case 0:
+//                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.activity_main_frame_layout, new LoginFragment());
+//                transaction.commit();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
 
     private void populateMap() {
         ArrayList<Post> posts = ((MainActivity) getActivity()).getPosts();
+
         if (posts != null && !posts.isEmpty()) {
             for (Post e : posts) {
 //                        Log.d(TAG, "Lat: " + e.getLat() + "Long: " + e.getLng() + "Title: " + e.getTitle());
@@ -130,4 +134,6 @@ public class MainMapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.setMyLocationEnabled(true);
 
     }
+
+
 }
