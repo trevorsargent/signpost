@@ -1,5 +1,6 @@
 package ml.signpost.signpost.Fragments;
 
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,15 +22,17 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
     private OnRowClickListener mListener;
     private ArrayList<Post> mPosts;
+    private Location mLastLocation;
 
     public interface OnRowClickListener {
         void onRowClick(Post post);
     }
 
 
-    public PostRecyclerViewAdapter(List<Post> listCall, OnRowClickListener listener) {
+    public PostRecyclerViewAdapter(List<Post> listCall, OnRowClickListener listener, Location location) {
         mPosts = new ArrayList<>(listCall);
         mListener = listener;
+        mLastLocation = location;
     }
 
     @Override
@@ -44,9 +47,9 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
     public void onBindViewHolder(final PostRecyclerViewAdapter.PostViewHolder holder, int position) {
         Post post = mPosts.get(position);
 
-
-        holder.lng.setText(post.getLng()+"");
-        holder.lat.setText(post.getLat()+"");
+        holder.dist.setText("Distance away: " + getDistanceTo(post) + " mi");
+        holder.lastUpdated.setText("Last updated: 24 min ago");
+        holder.signCount.setText("10 signs");
         holder.title.setText(post.getTitle().substring(0,1).toUpperCase()+ post.getTitle().substring(1).toLowerCase());
 
         holder.fullView.setOnClickListener(new View.OnClickListener() {
@@ -76,11 +79,14 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
         @Bind(R.id.row_post_title_text)
         TextView title;
 
-        @Bind(R.id.row_post_lat_num_text)
-        TextView lat;
+        @Bind(R.id.row_post_distance)
+        TextView dist;
 
-        @Bind(R.id.row_post_lng_num_text)
-        TextView lng;
+        @Bind(R.id.row_post_last_updated)
+        TextView lastUpdated;
+
+        @Bind(R.id.row_post_sign_count)
+        TextView signCount;
 
         View fullView;
 
@@ -96,5 +102,16 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
         notifyDataSetChanged();
     }
 
+    public String getDistanceTo(Post post){
+        float[] res = new float[1];
+        double dist;
+        Location.distanceBetween(mLastLocation.getLatitude(), mLastLocation.getLongitude(), post.getLat(), post.getLng(), res);
+        dist = res[0];
+        //conversion to miles
+        dist = dist*0.000621371;
+
+        StringBuilder sb = new StringBuilder();
+        return sb.append(dist).substring(0,3);
+    }
 
 }

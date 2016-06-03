@@ -1,6 +1,7 @@
 package ml.signpost.signpost.Fragments;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,19 +34,20 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
 
     private PostRecyclerViewAdapter mAdapter;
     private static MainPopularFragment sInstance;
+    private Location mLastLocation;
 
     public static MainPopularFragment newInstance() {
 
-        if (sInstance == null) {
+    //    if (sInstance == null) {
             MainPopularFragment fragment = new MainPopularFragment();
             Bundle args = new Bundle();
 
             fragment.setArguments(args);
             sInstance = fragment;
             return sInstance;
-        } else {
-            return sInstance;
-        }
+//        } else {
+//            return sInstance;
+//        }
 
     }
 
@@ -62,7 +64,10 @@ public class MainPopularFragment extends Fragment implements PostRecyclerViewAda
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         final ArrayList<Post> list = new ArrayList<>();
-        mAdapter = new PostRecyclerViewAdapter(list, this);
+        //get location
+        mLastLocation = ((MainActivity)getActivity()).getmLastLocation();
+
+        mAdapter = new PostRecyclerViewAdapter(list, this, mLastLocation);
         mRecyclerView.setAdapter(mAdapter);
 
         ArrayList<Post> posts = ((MainActivity) getActivity()).getPosts();

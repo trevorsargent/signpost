@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "winged-plate-125423",
+    "project_number": "1056322611672",
+    "name": "Signpost"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056322611672:android:aa858d845dd9bea6",
+        "client_id": "android:ml.signpost.signpost",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "ml.signpost.signpost",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056322611672-9ehga5jotej7a9cq4ou2vdooihnjuvaf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ml.signpost.signpost",
+            "certificate_hash": "D9B4833C108502CC9175A11255D23BB1821389BC"
+          }
+        },
+        {
+          "client_id": "1056322611672-ugmo2are9tp3a77iii3gk3i4i0v4sbga.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

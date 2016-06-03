@@ -28,4 +28,8 @@
     <string name="fragment_login_username">username</string>
     <string name="fragment_login_add_user">add user</string>
     <string name="select_a_post">Select a post</string>
+    <string name="post_distance">10 mi</string>
+    <string name="post_last_updated">10 mins ago</string>
+    <string name="row_post_sign_count">10</string>
+    <string name="row_post_distanceto">Distance away: %s mi</string>
 </resources>

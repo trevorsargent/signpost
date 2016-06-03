@@ -34,6 +34,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ml.signpost.signpost.Fragments.CreateSignFragment;
 import ml.signpost.signpost.Fragments.MainMapFragment;
+import ml.signpost.signpost.Fragments.MainNearbyFragment;
 import ml.signpost.signpost.Fragments.MainPopularFragment;
 import ml.signpost.signpost.Models.Post;
 import ml.signpost.signpost.Models.User;
@@ -216,7 +217,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
-
+    public Location getmLastLocation(){
+        return mLastLocation;
+    }
 
     private void getCurrentLocation() {
 
@@ -322,11 +325,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mBottomNav.setVisibility(View.VISIBLE);
         AHBottomNavigationItem map = new AHBottomNavigationItem("Map", R.drawable.ic_maps_place, Color.parseColor("#455C65"));
         AHBottomNavigationItem nearby = new AHBottomNavigationItem("Nearby", R.drawable.ic_maps_local_bar, Color.parseColor("#455C65"));
-       // AHBottomNavigationItem nearby = new AHBottomNavigationItem("Nearby", R.drawable.ic_maps_local_restaurant, Color.parseColor("#455C65"));
+        AHBottomNavigationItem popular = new AHBottomNavigationItem("Popular", R.drawable.ic_maps_local_restaurant, Color.parseColor("#455C65"));
 
         mBottomNav.addItem(map);
         mBottomNav.addItem(nearby);
-       // mBottomNav.addItem(nearby);
+        mBottomNav.addItem(popular);
 
         mBottomNav.setDefaultBackgroundColor(R.color.colorPrimaryDark);
 
@@ -344,9 +347,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                             mFab.setVisibility(View.VISIBLE);
                 } else if (position == 1) {
                     fm.beginTransaction()
-                            .replace(R.id.activity_main_frame_layout, MainPopularFragment.newInstance())
+                            .replace(R.id.activity_main_frame_layout, MainNearbyFragment.newInstance())
                             .commit();
                             mFab.setVisibility(View.INVISIBLE);
+                } else if (position == 2) {
+                    fm.beginTransaction()
+                            .replace(R.id.activity_main_frame_layout, MainPopularFragment.newInstance())
+                            .commit();
+                    mFab.setVisibility(View.INVISIBLE);
                 }
             }
         });
