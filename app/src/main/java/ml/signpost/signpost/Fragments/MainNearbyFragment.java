@@ -59,7 +59,7 @@ public class MainNearbyFragment extends Fragment implements PostRecyclerViewAdap
 
         final ArrayList<Post> list = new ArrayList<>();
         //get location
-        mLastLocation = ((MainActivity)getActivity()).getmLastLocation();
+        mLastLocation = ((MainActivity)getActivity()).getLastLocation();
 
         mAdapter = new PostRecyclerViewAdapter(list, this, mLastLocation);
         mRecyclerView.setAdapter(mAdapter);

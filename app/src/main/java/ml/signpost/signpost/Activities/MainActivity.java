@@ -233,7 +233,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if(mLastLocation != null) {
             handleLocation(mLastLocation);
         } else {
-            Log.d(TAG, "Couldn't get the location. Make sure location is enabled on the device");
+            mLastLocation = new Location("fake");
+            mLastLocation.setLatitude(45.4938380);
+            mLastLocation.setLongitude(-122.6250150);
+            Log.d(TAG, "Couldn't get the location. spoofing with 3674 SE Center St");
         }
     }
 
